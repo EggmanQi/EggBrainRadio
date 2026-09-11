@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EntryCard from '../components/EntryCard.astro';
+import { site } from '../consts';
+import { getCollection } from 'astro:content';
+
+const work = (await getCollection('work'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const words = (await getCollection('words'))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout description={site.description}>
+  <section class="hero">
+    <p class="hero-kicker">Indie studio log</p>
+    <h1>{site.name}</h1>
+    <p class="hero-lead">{site.tagline}</p>
+    <div class="cta-row">
+      <a class="button button-primary" href="/work">See the work</a>
+      <a class="button button-ghost" href="/words">Read the words</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Work</h2>
+      <a href="/work">All projects</a>
+    </div>
+    <div class="card-list">
+      {
+        work.map((entry) => (
+          <EntryCard
+            href={`/work/${entry.id}`}
+            title={entry.data.title}
+            summary={entry.data.summary}
+            date={entry.data.date}
+            meta={entry.data.status}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Words</h2>
+      <a href="/words">All notes</a>
+    </div>
+    <div class="card-list">
+      {
+        words.map((entry) => (
+          <EntryCard
+            href={`/words/${entry.id}`}
+            title={entry.data.title}
+            summary={entry.data.summary}
+            date={entry.data.date}
+          />
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

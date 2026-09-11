@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryCard from '../../components/EntryCard.astro';
+import { getCollection } from 'astro:content';
+
+const words = (await getCollection('words'))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  title="Words"
+  description="Notes on shipping indie products, craft, and operating overseas."
+>
+  <header class="page-intro">
+    <h1>Words</h1>
+    <p>Short essays and build logs. Subscribe via RSS if you want the drip.</p>
+  </header>
+  <div class="card-list">
+    {
+      words.map((entry) => (
+        <EntryCard
+          href={`/words/${entry.id}`}
+          title={entry.data.title}
+          summary={entry.data.summary}
+          date={entry.data.date}
+          meta={entry.data.tags.slice(0, 2).join(' · ') || undefined}
+        />
+      ))
+    }
+  </div>
+</BaseLayout>

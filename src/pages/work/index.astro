@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryCard from '../../components/EntryCard.astro';
+import { getCollection } from 'astro:content';
+
+const work = (await getCollection('work')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<BaseLayout
+  title="Work"
+  description="Indie products from EggBrain Radio — iOS apps, browser extensions, and experiments."
+>
+  <header class="page-intro">
+    <h1>Work</h1>
+    <p>Things I ship and keep alive. Store links, changelogs, and build notes live here.</p>
+  </header>
+  <div class="card-list">
+    {
+      work.map((entry) => (
+        <EntryCard
+          href={`/work/${entry.id}`}
+          title={entry.data.title}
+          summary={entry.data.summary}
+          date={entry.data.date}
+          meta={[entry.data.status, ...entry.data.tags.slice(0, 2)].join(' · ')}
+        />
+      ))
+    }
+  </div>
+</BaseLayout>

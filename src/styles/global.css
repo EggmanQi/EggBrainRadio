@@ -1,0 +1,360 @@
+:root {
+  --bg: #0f1412;
+  --bg-elevated: #171d1a;
+  --ink: #e8efe9;
+  --ink-muted: #9aaca0;
+  --line: rgba(232, 239, 233, 0.12);
+  --accent: #7dffb3;
+  --accent-soft: rgba(125, 255, 179, 0.14);
+  --glow: rgba(125, 255, 179, 0.08);
+  --font-display: 'Syne', 'Avenir Next', 'Segoe UI', sans-serif;
+  --font-body: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --space-xs: 0.5rem;
+  --space-sm: 0.875rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4.5rem;
+  --space-2xl: 7rem;
+  --radius: 0.75rem;
+  --max: 68rem;
+  --measure: 40rem;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 50% at 10% -10%, var(--glow), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(90, 140, 255, 0.06), transparent 50%),
+    var(--bg);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.site-shell {
+  width: min(100% - 2rem, var(--max));
+  margin-inline: auto;
+  padding-block: var(--space-md) var(--space-2xl);
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-block: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.brand span {
+  color: var(--accent);
+}
+
+.nav {
+  display: flex;
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+}
+
+.nav a[aria-current='page'],
+.nav a:hover {
+  color: var(--ink);
+}
+
+.hero {
+  min-height: calc(100svh - 10rem);
+  display: grid;
+  align-content: center;
+  gap: var(--space-md);
+  padding-bottom: var(--space-xl);
+  animation: rise 0.8s ease both;
+}
+
+.hero-kicker {
+  color: var(--accent);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  max-width: 12ch;
+}
+
+.hero-lead {
+  max-width: 32rem;
+  color: var(--ink-muted);
+  font-size: 1.15rem;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: var(--space-sm);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.65rem 1.15rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 500;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  color: inherit;
+}
+
+.button-primary {
+  background: var(--accent);
+  color: #062016;
+}
+
+.button-ghost {
+  border-color: var(--line);
+  color: var(--ink);
+  background: transparent;
+}
+
+.section {
+  margin-top: var(--space-xl);
+  animation: rise 0.7s ease both;
+  animation-delay: 0.12s;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.section-head h2 {
+  font-size: 1.35rem;
+}
+
+.section-head a {
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.card-list {
+  display: grid;
+  gap: 0;
+}
+
+.card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  transition: background 0.2s ease, padding-left 0.2s ease;
+}
+
+.card:hover {
+  color: inherit;
+  padding-left: 0.35rem;
+  background: linear-gradient(90deg, var(--accent-soft), transparent 55%);
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.card-summary {
+  color: var(--ink-muted);
+  max-width: 42rem;
+}
+
+.page-intro {
+  display: grid;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  max-width: 40rem;
+}
+
+.page-intro h1 {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+}
+
+.page-intro p {
+  color: var(--ink-muted);
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.prose :where(p, ul, ol) {
+  margin-block: 1rem;
+  color: var(--ink-muted);
+}
+
+.prose :where(h2, h3) {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose :where(a) {
+  color: var(--accent);
+}
+
+.prose :where(code) {
+  font-size: 0.9em;
+  background: var(--bg-elevated);
+  padding: 0.1em 0.35em;
+  border-radius: 0.3rem;
+}
+
+.prose :where(pre) {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+}
+
+.prose :where(pre code) {
+  background: transparent;
+  padding: 0;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  margin: var(--space-md) 0 var(--space-lg);
+}
+
+.link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: var(--space-md);
+}
+
+.site-footer {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.tag {
+  display: inline-flex;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

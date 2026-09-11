@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const work = await getCollection('work');
+  return work.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const formatted = entry.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.summary}>
+  <article>
+    <header class="page-intro">
+      <p class="hero-kicker">{entry.data.status}</p>
+      <h1>{entry.data.title}</h1>
+      <p>{entry.data.summary}</p>
+    </header>
+    <div class="meta-row">
+      <time datetime={entry.data.date.toISOString()}>{formatted}</time>
+      {
+        entry.data.tags.map((tag) => (
+          <span class="tag">{tag}</span>
+        ))
+      }
+    </div>
+    <div class="link-row">
+      {
+        entry.data.storeUrl && (
+          <a class="button button-primary" href={entry.data.storeUrl} target="_blank" rel="noopener noreferrer">
+            App Store
+          </a>
+        )
+      }
+      {
+        entry.data.websiteUrl && (
+          <a class="button button-ghost" href={entry.data.websiteUrl} target="_blank" rel="noopener noreferrer">
+            Website
+          </a>
+        )
+      }
+      {
+        entry.data.githubUrl && (
+          <a class="button button-ghost" href={entry.data.githubUrl} target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+        )
+      }
+    </div>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
