@@ -14,21 +14,20 @@ npm install
 npm run dev
 ```
 
-### Write locally (no GitHub OAuth)
+### Write locally (optional)
 
-Terminal 1:
+1. In `public/admin/config.yml`, temporarily uncomment `local_backend: true`.
+2. Run two terminals:
 
 ```bash
 npm run dev
-```
-
-Terminal 2:
-
-```bash
 npm run cms
 ```
 
-Open [http://localhost:4321/admin/](http://localhost:4321/admin/) — Decap talks to `decap-server` and writes Markdown into the repo.
+3. Open [http://localhost:4321/admin/](http://localhost:4321/admin/).
+4. Before deploying, comment `local_backend` out again (production must stay off).
+
+Production `/admin` loads a self-hosted `decap-cms.js` (no CDN) and uses GitHub OAuth.
 
 ## Build
 

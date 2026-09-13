@@ -9,8 +9,9 @@ backend:
   base_url: https://eggbrainradio.eggmanqi.workers.dev
   auth_endpoint: api/auth
 
-# Local writing: run `npm run cms` alongside `npm run dev`, then open /admin/
-local_backend: true
+# Local writing only: uncomment when running `npm run cms` with `npm run dev`.
+# Keep this OFF in production — otherwise /admin can hang or render blank.
+# local_backend: true
 
 media_folder: public/uploads
 public_folder: /uploads
