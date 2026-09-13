@@ -5,7 +5,7 @@ Personal site for indie products and writing.
 - **Work** — project pages (`src/content/work`)
 - **Words** — essays and notes (`src/content/words`)
 - **Admin** — private online editor at `/admin/` ([Decap CMS](https://decapcms.org) → GitHub)
-- Stack: [Astro](https://astro.build) → static output on **Cloudflare**
+- Stack: [Astro](https://astro.build) → **Cloudflare Workers** (static `dist/` + `worker/index.js` for OAuth)
 
 ## Develop
 
@@ -27,7 +27,7 @@ npm run cms
 3. Open [http://localhost:4321/admin/](http://localhost:4321/admin/).
 4. Before deploying, comment `local_backend` out again (production must stay off).
 
-Production `/admin` loads a self-hosted `decap-cms.js` (no CDN) and uses GitHub OAuth.
+Production `/admin` loads a self-hosted `decap-cms.js` (no CDN) and uses GitHub OAuth via `/api/auth`.
 
 ## Build
 
@@ -36,13 +36,15 @@ npm run build
 npm run preview
 ```
 
-Output directory: `dist/`
+Output directory: `dist/` (configured in `wrangler.toml` as assets)
 
 ## Cloudflare deploy
 
-1. Connect this GitHub repo in Cloudflare (Pages / Workers + Assets).
-2. Build: `npm run build` · Output: `dist` · Node: `22+`.
-3. Ensure the `/functions` directory is deployed (needed for CMS login). Classic **Pages** picks it up automatically.
+This project uses **Workers + Assets**, not classic Pages Functions.
+
+1. Git-connected Worker project `eggbrainradio` builds with `npm run build`.
+2. `wrangler.toml` publishes `./dist` as static assets and `worker/index.js` for `/api/*`.
+3. Node: `22+`.
 
 ### Enable production writing (`/admin`)
 
@@ -50,15 +52,19 @@ Output directory: `dist/`
    - Homepage URL: `https://eggbrainradio.eggmanqi.workers.dev` (or your custom domain)
    - Authorization callback URL: `https://eggbrainradio.eggmanqi.workers.dev/api/auth`
 2. Copy **Client ID** and generate a **Client Secret**.
-3. Cloudflare project → **Settings → Variables and Secrets**
+3. Cloudflare project → **Settings → Variables and Secrets** (Production)
    - `GITHUB_CLIENT_ID` = Client ID
    - `GITHUB_CLIENT_SECRET` = Client Secret (secret)
-4. If your public URL changes, update `backend.base_url` in `public/admin/config.yml` to match, then redeploy.
-5. Open `https://<your-domain>/admin/` → **Login with GitHub** (must be a collaborator/owner of `EggmanQi/EggBrainRadio`).
+4. Redeploy after adding secrets.
+5. Smoke-test: open `https://eggbrainradio.eggmanqi.workers.dev/api/auth`  
+   - Should show “Completing GitHub sign-in…” or redirect to GitHub (not a browser “找不到网页”).
+6. Open `/admin/` → **Login with GitHub** (account must have write access to `EggmanQi/EggBrainRadio`).
+
+If your public URL changes, update `backend.base_url` in `public/admin/config.yml` and the OAuth App URLs, then redeploy.
 
 Saving a post commits to `main` and triggers a rebuild. Drafts use `draft: true` and stay off the public Words list.
 
-Optional hardening: put Cloudflare Access on `/admin*` so only your email can open the CMS UI.
+Optional hardening: Cloudflare Access on `/admin*`.
 
 ## Content without the CMS
 

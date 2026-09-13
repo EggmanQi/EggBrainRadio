@@ -1,0 +1,10 @@
+# EggBrain Radio — static Astro assets + OAuth Worker for Decap CMS
+name = "eggbrainradio"
+main = "worker/index.js"
+compatibility_date = "2026-09-13"
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+# Run Worker before assets for API routes (required for /api/auth)
+run_worker_first = ["/api/*"]

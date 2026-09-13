@@ -1,12 +1,26 @@
 /**
- * GitHub OAuth proxy for Decap CMS on Cloudflare Pages / Workers Assets.
- * Env secrets: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
- *
- * GitHub OAuth App callback URL must be:
- *   https://<your-domain>/api/auth
+ * Cloudflare Worker: static Astro site + Decap GitHub OAuth at /api/auth
+ * Secrets: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
  */
-export async function onRequest(context) {
-  const { request, env } = context;
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+
+    if (url.pathname === '/api/auth') {
+      return handleGitHubAuth(request, env);
+    }
+
+    // Static assets are usually served without invoking this Worker.
+    // Fallback if a request still reaches us.
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
+    }
+
+    return new Response('Not found', { status: 404 });
+  },
+};
+
+async function handleGitHubAuth(request, env) {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
 
