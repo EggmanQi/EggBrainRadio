@@ -91,14 +91,36 @@ p {
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.05rem;
   letter-spacing: -0.02em;
   text-decoration: none;
+  color: var(--ink);
 }
 
-.brand span {
+.brand:hover {
+  color: var(--ink);
+}
+
+.brand-mark {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.65rem;
+  object-fit: cover;
+  background: #fdf6eb;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.brand-text {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.brand-accent {
   color: var(--accent);
 }
 

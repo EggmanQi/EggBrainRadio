@@ -12,6 +12,14 @@ export async function GET(context: APIContext) {
     title: `${site.name} — Words`,
     description: site.description,
     site: context.site!,
+    customData: [
+      '<language>en-us</language>',
+      '<image>',
+      `<url>${new URL(site.logoFull, context.site).href}</url>`,
+      `<title>${site.name}</title>`,
+      `<link>${context.site}</link>`,
+      '</image>',
+    ].join(''),
     items: words.map((entry) => ({
       title: entry.data.title,
       description: entry.data.summary,

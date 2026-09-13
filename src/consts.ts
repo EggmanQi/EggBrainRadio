@@ -7,6 +7,10 @@ export const site = {
   author: 'Edwin',
   locale: 'en',
   email: '',
+  logo: '/logo-mark.png',
+  logoFull: '/logo.png',
+  favicon: '/favicon.ico',
+  appleTouchIcon: '/apple-touch-icon.png',
   social: {
     github: 'https://github.com/EggmanQi',
     x: '',
