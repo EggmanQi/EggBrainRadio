@@ -10,7 +10,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "cms": "npx --yes decap-server"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
