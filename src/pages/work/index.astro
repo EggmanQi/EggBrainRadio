@@ -3,9 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import EntryCard from '../../components/EntryCard.astro';
 import { getCollection } from 'astro:content';
 
-const work = (await getCollection('work')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const work = (await getCollection('work'))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout

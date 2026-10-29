@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const words = (await getCollection('words')).filter((e) => !e.data.draft);
+const work = (await getCollection('work')).filter((e) => !e.data.draft);
+
+const tagMap = new Map<string, number>();
+for (const e of [...words, ...work]) {
+  for (const tag of e.data.tags ?? []) {
+    tagMap.set(tag, (tagMap.get(tag) ?? 0) + 1);
+  }
+}
+const tags = [...tagMap.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+---
+
+<BaseLayout
+  title="Tags"
+  description="Browse all notes and projects by topic."
+>
+  <header class="page-intro">
+    <h1>Tags</h1>
+    <p>Everything indexed by topic.</p>
+  </header>
+  <div class="tag-cloud">
+    {
+      tags.map(([tag, count]) => (
+        <a class="tag tag-link" href={`/tags/${tag}`}>
+          {tag} <span class="tag-count">{count}</span>
+        </a>
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .tag-link {
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.35rem 0.8rem;
+  }
+  .tag-count {
+    opacity: 0.6;
+    margin-left: 0.3rem;
+    font-size: 0.8rem;
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryCard from '../../components/EntryCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const words = (await getCollection('words')).filter((e) => !e.data.draft);
+  const work = (await getCollection('work')).filter((e) => !e.data.draft);
+
+  const tagSet = new Set<string>();
+  for (const e of [...words, ...work]) {
+    for (const tag of e.data.tags ?? []) tagSet.add(tag);
+  }
+
+  return [...tagSet].map((tag) => ({
+    params: { tag },
+    props: { tag, words, work },
+  }));
+}
+
+const { tag, words, work } = Astro.props;
+
+const taggedWords = words
+  .filter((e) => e.data.tags.includes(tag))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const taggedWork = work
+  .filter((e) => e.data.tags.includes(tag))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title={`#${tag}`} description={`All notes and projects tagged ${tag}.`}>
+  <header class="page-intro">
+    <p class="hero-kicker">Tag</p>
+    <h1>#{tag}</h1>
+  </header>
+
+  {
+    taggedWork.length > 0 && (
+      <section class="section">
+        <div class="section-head">
+          <h2>Work</h2>
+        </div>
+        <div class="card-list">
+          {taggedWork.map((entry) => (
+            <EntryCard
+              href={`/work/${entry.id}`}
+              title={entry.data.title}
+              summary={entry.data.summary}
+              date={entry.data.date}
+              meta={entry.data.status}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    taggedWords.length > 0 && (
+      <section class="section">
+        <div class="section-head">
+          <h2>Words</h2>
+        </div>
+        <div class="card-list">
+          {taggedWords.map((entry) => (
+            <EntryCard
+              href={`/words/${entry.id}`}
+              title={entry.data.title}
+              summary={entry.data.summary}
+              date={entry.data.date}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <p style="margin-top: var(--space-lg);">
+    <a href="/tags">← All tags</a>
+  </p>
+</BaseLayout>

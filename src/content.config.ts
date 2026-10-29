@@ -8,6 +8,7 @@ const work = defineCollection({
     summary: z.string(),
     date: z.coerce.date(),
     status: z.enum(['shipped', 'building', 'archived']).default('shipped'),
+    draft: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
     storeUrl: z.string().url().optional(),
     githubUrl: z.string().url().optional(),

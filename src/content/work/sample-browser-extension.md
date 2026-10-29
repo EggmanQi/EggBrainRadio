@@ -3,6 +3,7 @@ title: Sample Browser Extension
 summary: A starter project page for a Chrome / Safari extension aimed at overseas users.
 date: 2026-08-12
 status: shipped
+draft: true
 tags: [extension, browser]
 featured: true
 websiteUrl: https://github.com/EggmanQi

@@ -73,6 +73,10 @@ collections:
     slug: '{{slug}}'
     summary: '{{title}} — {{status}}'
     sortable_fields: ['date', 'title']
+    view_filters:
+      - label: Drafts
+        field: draft
+        pattern: true
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Summary, name: summary, widget: text }
@@ -91,6 +95,7 @@ collections:
           options: ['shipped', 'building', 'archived'],
           default: 'building',
         }
+      - { label: Draft, name: draft, widget: boolean, default: true, required: false }
       - {
           label: Tags,
           name: tags,

@@ -3,6 +3,7 @@ title: Sample iOS App
 summary: Placeholder case study for your next App Store release. Replace this with a real product page.
 date: 2026-09-01
 status: building
+draft: true
 tags: [iOS, indie]
 featured: true
 githubUrl: https://github.com/EggmanQi
