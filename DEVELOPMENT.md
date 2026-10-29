@@ -1,6 +1,6 @@
 # EggBrain Radio — 项目说明与开发进度
 
-> 最后更新：2026-10-21
+> 最后更新：2026-10-29
 > 仓库：`EggmanQi/EggBrainRadio` · 分支 `main`
 > 本地路径：`.../My Blog/EggBrainRadio`
 
@@ -58,7 +58,7 @@ EggBrain Radio 是 Edwin 的独立开发者站点（English-facing），面向�
 
 ## 3. 当前开发进度
 
-以下改动于 **2026-09-29** 执行完毕，`npm run build` 验证通过（11 个页面生成，sitemap 正常输出）。**注意：这些改动目前全部停留在工作区，尚未 commit / push。**
+以下改动于 **2026-09-29** 执行完毕，`npm run build` 验证通过（11 个页面生成，sitemap 正常输出）。**已于 2026-10-29 提交并推送到 `main`（`49ba5b1..d6dcb71`），已触发 Cloudflare 自动重建。**
 
 ### 3.1 已完成改动
 
@@ -78,9 +78,18 @@ EggBrain Radio 是 Edwin 的独立开发者站点（English-facing），面向�
 - 构建产物确认：`dist/work/` 下无 sample 子页（草稿过滤生效）
 - `dist/sitemap-index.xml`、`dist/sitemap-0.xml`、`dist/robots.txt` 均正常生成
 
-### 3.3 Git 状态（重要）
+### 3.3 Git 状态（已提交）
 
-当前 `git status` 显示以上改动 **均未提交**（8 个 M + 1 个 D + 3 个新增路径）。建议下一步：`git add -A && git commit`（可拆分为「chore: cleanup + seo + tags」等提交），确认无误后 push 触发线上重建。
+**2026-10-29** 已按逻辑拆分提交并推送至 `origin/main`，工作区干净。提交记录：
+
+| Commit | 说明 |
+|---|---|
+| `f69263d` | chore: remove deprecated functions dir and scaffold leftovers |
+| `c33d9a9` | feat: add sitemap, robots.txt and 404 page |
+| `f2bd677` | feat: add tags archive and draft support for work |
+| `d6dcb71` | docs: add development notes |
+
+推送范围：`49ba5b1..d6dcb71`。Cloudflare 已收到 push 事件，等待自动重建完成并线上验证。
 
 ---
 
@@ -89,13 +98,27 @@ EggBrain Radio 是 Edwin 的独立开发者站点（English-facing），面向�
 | # | 优先级 | 事项 | 说明 | 风险 | 收益 | 需要的输入 |
 |---|---|---|---|---|---|---|
 | A1 | 🔴 高 | **域名配置对齐** | `astro.config.mjs` 的 `site` 为 `https://eggbrainradio.com`，但 Decap `base_url` 与当前部署实际指向 `eggbrainradio.eggmanqi.workers.dev`；robots.txt / canonical / RSS / OG 均受影响 | 自定义域名未在 Cloudflare 配好路由则线上 404；改回 workers.dev 需同步 OAuth App 回调 | 所有对外链接与 SEO 信号统一 | 确认 eggbrainradio.com 是否已在 Cloudflare 绑定；或授权改回 workers.dev |
-| A2 | 🔴 高 | **提交并推送当前改动** | 3.1 全部改动未 commit，未触发线上重建 | 改动滞留本地，若环境丢失则白做 | 上线全部改进 | 无（确认提交即可） |
+| ~~A2~~ | ✅ 已完成 | **提交并推送当前改动** | 已于 2026-10-29 完成（4 个 commit，`49ba5b1..d6dcb71`），已触发 Cloudflare 自动重建 | — | 上线全部改进 | — |
 | A3 | 🟡 中 | **替换 Work 占位内容** | 两个 sample 页是模板，需替换为真实产品并去掉 `draft: true` | 低（纯内容） | 首屏展示真实产品 | 真实产品信息（名称、简介、商店链接、日期） |
 | A4 | 🟡 中 | **补全站点元信息** | `src/consts.ts` 中 `email: ''` 与 `social.x: ''` 为空 | 无 | footer 联系渠道完整 | 真实邮箱 / X(Twitter) 链接 |
 | A5 | 🟡 中 | **OAuth origin 安全加固** | `worker/index.js` 中 `postMessage('*')`（第 98、103 行）未限定 origin | origin 判断写错会使 /admin 登录卡死，需本地 + 生产实测 | 防止恶意页面冒充 Decap 接收 GitHub token | 在 `npm run cms` 本地流程实测通过后修改 |
 | A6 | 🟡 中 | **隐私政策 / 支持页** | 浏览器扩展上架审核需要隐私政策链接（sample 页自身也标注了此 TODO） | 无 | 满足 Chrome/Safari/App Store 审核要求 | 真实隐私政策内容（或授权模板 + 占位） |
 | A7 | 🟢 低 | **导航加入 Tags 入口** | 标签归档页已上线，但 `consts.ts` 的 `nav` 尚无 Tags 链接 | 无 | 标签页可被发现 | 无（确认即可加） |
 | A8 | 🟢 低 | **CSS tag hover 微调** | 上一轮有意跳过的非关键样式调整（`.tag` 链接化后的 hover 视觉） | 无 | 视觉一致性 | 无 |
+
+---
+
+## 4.5 当前阻塞点（截至 2026-10-29）
+
+以下事项阻塞后续推进，**需要用户决策或提供信息后才能继续**：
+
+| # | 阻塞点 | 阻塞类型 | 具体描述 | 解除条件 |
+|---|---|---|---|---|
+| B1 | **域名归属未确认** | 需要用户决策 | `astro.config.mjs` 使用 `eggbrainradio.com`，但实际部署走 `eggbrainradio.eggmanqi.workers.dev`。无法判断以哪个为准，也不敢擅自改动线上配置 | 用户确认自定义域名是否已在 Cloudflare 绑定；或明确授权把 `site` 改回 workers.dev |
+| B2 | **线上重建结果待验证** | 需要外部确认 | push 已触发 Cloudflare 自动重建，但无法在本地确认线上是否成功、新页面（/tags、/404、robots）是否可访问 | 用户打开线上站点检查，或提供 Cloudflare 构建日志结果 |
+| B3 | **真实产品信息缺失** | 需要用户提供内容 | Work 集合全部为 draft 占位页，无法替换成真实项目 | 用户提供至少一个真实产品的名称、简介、日期、商店/仓库链接 |
+| B4 | **站点联系信息缺失** | 需要用户提供内容 | `src/consts.ts` 中 `email` 与 `social.x` 为空字符串，无法补全 | 用户提供真实邮箱 / X(Twitter) 链接 |
+| B5 | **OAuth 加固无法实测** | 需要用户配合验证 | `worker/index.js` 的 `postMessage('*')` 加固会改动登录链路，未实测前不敢改 | 用户在本地 `npm run cms` 跑通 Decap 登录流程后，方可实施并回归验证 |
 
 ---
 
